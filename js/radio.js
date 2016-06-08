@@ -23,6 +23,7 @@ define(function(require) {
 		'notification',
 		'state',
 		'ui',
+		'aliases',
 		'keyboard'
 	];
 
