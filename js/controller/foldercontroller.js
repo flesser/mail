@@ -63,7 +63,6 @@ define(function(require) {
 		Radio.ui.trigger('content:loading');
 		Radio.ui.trigger('messagesview:messages:reset');
 
-		$('#load-new-mail-messages').hide();
 		$('#load-more-mail-messages').hide();
 
 		if (noSelect) {
@@ -107,10 +106,6 @@ define(function(require) {
 				} else {
 					$('#emptycontent').show();
 				}
-				$('#load-new-mail-messages')
-					.fadeIn()
-					.css('display', 'block')
-					.prop('disabled', false);
 
 				if (cached) {
 					// Trigger folder update

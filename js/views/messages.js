@@ -36,10 +36,6 @@ define(function(require) {
 		template: Handlebars.compile(MessageListTemplate),
 		currentMessageId: null,
 		loadingMore: false,
-		events: {
-			'click #load-new-mail-messages': 'loadNew',
-			'click #load-more-mail-messages': 'loadMore',
-		},
 		filterCriteria: null,
 		initialize: function() {
 			this.listenTo(this.collection, 'change:flags', this.changeFlags);
@@ -48,7 +44,7 @@ define(function(require) {
 			Radio.ui.reply('messagesview:collection', function() {
 				return _this.collection;
 			});
-			this.listenTo(Radio.ui, 'messagesview:messages:update', this.loadNew);
+			this.listenTo(Radio.ui, 'messagesview:messages:update', this.refresh);
 			this.listenTo(Radio.ui, 'messagesview:messages:reset', this.reset);
 			this.listenTo(Radio.ui, 'messagesview:messages:add', this.addMessages);
 			this.listenTo(Radio.ui, 'messagesview:messageflag:set', this.setMessageFlag);
@@ -105,23 +101,15 @@ define(function(require) {
 			require('state').folderView.updateTitle();
 
 		},
-		loadNew: function() {
+		refresh: function() {
 			if (!require('state').currentAccount) {
 				return;
 			}
 			if (!require('state').currentFolder) {
 				return;
 			}
-			// Add loading feedback
-			$('#load-new-mail-messages')
-				.addClass('icon-loading-small')
-				.val(t('mail', 'Checking messages'))
-				.prop('disabled', true);
 
 			this.loadMessages(true);
-		},
-		loadMore: function() {
-			this.loadMessages(false);
 		},
 		onScroll: function() {
 			if (this.loadingMore === true) {
@@ -137,7 +125,7 @@ define(function(require) {
 			this.filterCriteria = {
 				text: query
 			};
-			this.loadNew();
+			this.refresh();
 		},
 		clearFilter: function() {
 			$('#searchbox').val('');
@@ -180,10 +168,6 @@ define(function(require) {
 			$.when(loadingMessages).always(function() {
 				// Remove loading feedback again
 				$('#load-more-mail-messages').removeClass('icon-loading');
-				$('#load-new-mail-messages')
-					.removeClass('icon-loading-small')
-					.val(t('mail', 'Check messages'))
-					.prop('disabled', false);
 				_this.loadingMore = false;
 			});
 		},
