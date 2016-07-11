@@ -92,10 +92,9 @@ class AccountsControllerTest extends \Test\TestCase {
 	public function testIndex() {
 		$this->account->expects($this->once())
 			->method('getConfiguration')
-			->will($this->returnValue('conf'));
-		$this->account->expects($this->once())
-			->method('getId')
-			->will($this->returnValue($this->accountId));
+			->will($this->returnValue([
+				'accountId' => 123,
+			]));
 		$this->accountService->expects($this->once())
 			->method('findByUserId')
 			->with($this->equalTo($this->userId))
@@ -107,7 +106,12 @@ class AccountsControllerTest extends \Test\TestCase {
 
 		$response = $this->controller->index();
 
-		$expectedResponse = new JSONResponse(['conf']);
+		$expectedResponse = new JSONResponse([
+			[
+				'accountId' => 123,
+				'aliases' => 'aliases'
+			]
+		]);
 		$this->assertEquals($expectedResponse, $response);
 	}
 

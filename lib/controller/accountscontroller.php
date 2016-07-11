@@ -125,10 +125,9 @@ class AccountsController extends Controller {
 
 		$json = [];
 		foreach ($mailAccounts as $mailAccount) {
-			$json[] = $mailAccount->getConfiguration();
-		}
-		foreach ($json as $key => $mailAccount) {
-			$json[$key]['aliases'] = $this->aliasesService->findAll($mailAccount['accountId'], $this->currentUserId);
+			$conf = $mailAccount->getConfiguration();
+			$conf['aliases'] = $this->aliasesService->findAll($conf['accountId'], $this->currentUserId);
+			$json[] = $conf;
 		}
 		return new JSONResponse($json);
 	}

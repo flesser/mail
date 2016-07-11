@@ -23,8 +23,8 @@ define(function(require) {
 		'notification',
 		'state',
 		'ui',
-		'aliases',
-		'keyboard'
+		'keyboard',
+		'aliases'
 	];
 
 	var channels = {};
