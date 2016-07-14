@@ -57,7 +57,6 @@ define(function(require) {
 			this.ui.submitButton.prop('disabled', true);
 			var _this = this;
 
-			// var savingAlias = AliasesController.saveAlias(this.currentAccount, alias);
 			var savingAlias = Radio.aliases.trigger('save', this.currentAccount, alias);
 
 			$.when(savingAlias).done(function(alias) {
@@ -69,6 +68,7 @@ define(function(require) {
 				}
 				require('state').accounts.get(_this.currentAccount.get('accountId')).set({'aliases': aliases});
 				_this.currentAccount = require('state').accounts.get(_this.currentAccount.get('accountId'));
+				Radio.aliases.trigger('alias:add', aliases);
 			});
 
 			$.when(savingAlias).always(function() {
@@ -86,7 +86,7 @@ define(function(require) {
 		},
 		showAliases: function() {
 			this.aliasesRegion.show(new AliasesView({
-				collection: this.currentAccount.get('aliases')
+				currentAccount: this.currentAccount
 			}));
 		}
 	});

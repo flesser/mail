@@ -41,6 +41,7 @@ define(function(require) {
 			var account = require('state').accounts.get(this.model.get('accountId'));
 			var aliasId = this.model.get('id');
 			var deletingAlias = Radio.aliases.trigger('delete', account, aliasId);
+			Radio.aliases.trigger('alias:remove', [{ id : aliasId }]);
 			$.when(deletingAlias).done(function() {
 				var aliases = [];
 				var json = account.toJSON();

@@ -19,12 +19,18 @@ define(function(require) {
 	return Marionette.CollectionView.extend({
 		collection: null,
 		childView: AliasesListView,
+		currentAccount: null,
 		initialize: function(options) {
-			this.collection = new Backbone.Collection(options.collection);
-			this.listenTo(Radio.aliases, 'aliases:change', this.resetAlias);
+			this.currentAccount = options.currentAccount;
+			this.collection = new Backbone.Collection(this.currentAccount.get('aliases'));
+			this.listenTo(Radio.aliases, 'alias:add', this.addAlias);
+			this.listenTo(Radio.aliases, 'alias:remove', this.removeAlias);
 		},
-		resetAlias: function(aliases) {
-			this.collection.reset(aliases);
+		addAlias: function(alias) {
+			this.collection.add(alias);
+		},
+		removeAlias: function(alias) {
+			this.collection.remove(alias);
 		}
 	});
 });
